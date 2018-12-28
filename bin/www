@@ -7,12 +7,13 @@
 var app = require('../app');
 var debug = require('debug')('express-iot-vlc:server');
 var http = require('http');
+var infoServer=require('../config');//include config setting
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || infoServer.listenPort.toString());
 app.set('port', port);
 
 /**
@@ -25,7 +26,14 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port,()=>{
+  console.log('listening port:'+port);
+});
+
+
+//----------------------------------------------------------
+
+
 server.on('error', onError);
 server.on('listening', onListening);
 
