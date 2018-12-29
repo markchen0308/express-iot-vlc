@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "target": "es2017",
+        "target": "es6",
         "module": "commonjs",
-        "outDir": "dist/",
+        "outDir": "./",
         "types": [
             // add node as an option
             "node"
@@ -14,7 +14,7 @@
         ]
     },
     "include": [
-        "src/**/*.ts"
+        "*.ts"
     ],
     "exclude": [
         "node_modules"
