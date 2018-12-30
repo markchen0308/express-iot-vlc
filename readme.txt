@@ -2,6 +2,7 @@
 npm install
 
 //run
+sudo node ./test/server.js
 sudo node ./bin/www
 
 //typescript compile 
@@ -9,6 +10,7 @@ tsc
 
 //test
 node ./test/test.js
+
 
 //config setting
 see config.js

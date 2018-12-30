@@ -1,9 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 let net = require('net'); // 引入網路(Net)模組
-let infoServer = require('./config'); //include config setting
-let serverPort = infoServer.scoketServerPort;
-let serverIp = infoServer.socketServerIP;
+let fs = require('fs');
+let configfilePath = './config.json';
+let configJsonFile = fs.readFileSync(configfilePath, 'utf8'); //read config.json file
+let configJson = JSON.parse(configJsonFile); //parse coonfig.json file
+let serverPort = configJson.scoketWebServerPort;
+let serverIp = configJson.socketWebServerIP;
 class Client {
     constructor() {
         console.log("start connect server");

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-//let DB = require('../DB');
+let socketClient = require('../socketclient');
 
 let getTodaylastest = 1;
 let getTodayAfter = 2;
@@ -13,7 +13,7 @@ let postDimingCT = 8;
 let postDimingXY=9;
 let msgError = 404;
 
-let socketClient = require('../socketclient');
+
 
 
 //------------------------------------------------------------------

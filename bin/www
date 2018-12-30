@@ -7,10 +7,15 @@
 var app = require('../app');
 var debug = require('debug')('express-iot-vlc:server');
 var http = require('http');
-var infoServer=require('../config');//include config setting
+//var infoServer=require('../config');//include config setting
 
-let webserverPort=infoServer.webserverPort.toString();
-let webserverIp=infoServer.webserverIp;
+let fs=require('fs');
+let configfilePath='./config.json';
+let configJsonFile=fs.readFileSync(configfilePath, 'utf8');//read config.json file
+var configJson = JSON.parse(configJsonFile);//parse coonfig.json file
+
+let webserverPort=configJson.webserverPort;
+let webserverIp=configJson.webserverIp;
 
 /**
  * Get port from environment and store in Express.
