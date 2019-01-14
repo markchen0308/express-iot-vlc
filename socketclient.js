@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 let net = require('net'); // 引入網路(Net)模組
 let fs = require('fs');
 let configfilePath = './config.json';

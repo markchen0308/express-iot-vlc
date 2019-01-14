@@ -1,5 +1,3 @@
-import {InterfaceProtocol} from "./interfaceServer"
-
 let net = require('net'); // 引入網路(Net)模組
 let fs=require('fs');
 let configfilePath='./config.json';
