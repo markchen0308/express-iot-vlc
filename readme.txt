@@ -22,4 +22,8 @@ see config.js
   #CREATE DATABASE IOT;  //create database IOT
 
 
-
+//check port 80 
+sudo lsof -i :80 | grep LISTEN
+//stop apache2
+sudo service apache2 stop
+sudo systemctl disable apache2

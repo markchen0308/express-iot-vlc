@@ -5,6 +5,10 @@ let ip = infoServer.webserverIp;
 
 function runshell() {
     shell.exec('curl -sL -X GET http://' + ip.toString() + ':' + port + '/vlc/gw/get/today/latest');
+    shell.exec('sleep 0.1');
+    shell.exec('curl -sL -X GET http://' + ip.toString() + ':' + port + '/vlc/gw/get/today/latest');
+    shell.exec('sleep 0.1');
+    shell.exec('curl -sL -X GET http://' + ip.toString() + ':' + port + '/vlc/gw/get/today/latest');
    /* shell.exec('sleep 0.1');
     console.log('');
     shell.exec('curl -sL -X GET http://' + ip.toString() + ':' + port + '/vlc/gw/get/today/after?seqid=5');

@@ -1,5 +1,5 @@
-let express = require('express');
-let router = express.Router();
+var express = require('express');
+var router = express.Router();
 let socketClient = require('../socketclient');
 var webCmd;
 (function (webCmd) {
@@ -22,7 +22,7 @@ router.get('/get/today/latest', (req, res, next) => {
     };
     socketClient.sendMessage(JSON.stringify(cmd))
         .then((data) => {
-        console.log('Received:' + data);
+        //console.log('Received:' + data);
         res.send(data);
     });
 });
@@ -36,7 +36,7 @@ router.get('/get/today/after', (req, res, next) => {
         };
         socketClient.sendMessage(JSON.stringify(cmd))
             .then((data) => {
-            console.log('Received:' + data);
+            //console.log('Received:' + data);
             res.send(data);
         });
     }
@@ -56,7 +56,7 @@ router.get('/get/today', (req, res, next) => {
     };
     socketClient.sendMessage(JSON.stringify(cmd))
         .then((data) => {
-        console.log('Received:' + data);
+        //console.log('Received:' + data);
         res.send(data);
     });
 });
@@ -68,7 +68,7 @@ router.get('/get/yesterday', (req, res, next) => {
     };
     socketClient.sendMessage(JSON.stringify(cmd))
         .then((data) => {
-        console.log('Received:' + data);
+        //console.log('Received:' + data);
         res.send(data);
     });
 });
@@ -84,7 +84,7 @@ router.get('/get/date', (req, res, next) => {
         };
         socketClient.sendMessage(JSON.stringify(cmd))
             .then((data) => {
-            console.log('Received:' + data);
+            //console.log('Received:' + data);
             res.send(data);
         });
     }
@@ -104,7 +104,7 @@ router.post('/post/reset', (req, res, next) => {
     };
     socketClient.sendMessage(JSON.stringify(cmd))
         .then((data) => {
-        console.log('Received:' + data);
+        //console.log('Received:' + data);
         res.send(data);
     });
 });
@@ -119,7 +119,7 @@ router.post('/post/dimming/brightness/', (req, res, next) => {
         };
         socketClient.sendMessage(JSON.stringify(cmd))
             .then((data) => {
-            console.log('Received:' + data);
+            //console.log('Received:' + data);
             res.send(data);
         });
     }
@@ -139,7 +139,7 @@ router.post('/post/dimming/colorTemperature/', (req, res, next) => {
         };
         socketClient.sendMessage(JSON.stringify(cmd))
             .then((data) => {
-            console.log('Received:' + data);
+            //console.log('Received:' + data);
             res.send(data);
         });
     }
@@ -160,7 +160,7 @@ router.post('/post/dimming/colorXY/', (req, res, next) => {
         };
         socketClient.sendMessage(JSON.stringify(cmd))
             .then((data) => {
-            console.log('Received:' + data);
+            //console.log('Received:' + data);
             res.send(data);
         });
     }
