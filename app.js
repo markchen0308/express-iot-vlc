@@ -6,7 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var gwRouter= require('./routes/gw');
+var routerRestfulApi= require('./routes/restfulApi');
+//let router=require('./routes/restfulApi');
 
 var app = express();
 
@@ -22,7 +23,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/vlc/gw/',gwRouter);
+app.use('/vlc',routerRestfulApi);
+
 //app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler

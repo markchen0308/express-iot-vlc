@@ -10,15 +10,16 @@ enum webCmd {
   getToday,
   getYesterday,
   getDate,
+  getDriver,
   postReset,
   postDimingBrightness,
   postDimingCT,
   postDimingXY,
-  msgError=404
+  msgError = 404
 }
 
 //------------------------------------------------------------------
-router.get('/get/today/latest', (req, res, next) => {
+router.get('/gw/get/today/latest', (req, res, next) => {
   let cmd =
   {
     cmdtype: webCmd.getTodaylast,
@@ -32,7 +33,7 @@ router.get('/get/today/latest', (req, res, next) => {
 });
 
 //-------------------------------------------------------------------
-router.get('/get/today/after', (req, res, next) => {
+router.get('/gw/get/today/after', (req, res, next) => {
   let seqid = req.query.seqid;
   if (Boolean(seqid)) {
     let cmd =
@@ -58,7 +59,7 @@ router.get('/get/today/after', (req, res, next) => {
 });
 
 //----------------------------------------------------------------------
-router.get('/get/today', (req, res, next) => {
+router.get('/gw/get/today', (req, res, next) => {
   let cmd =
   {
     cmdtype: webCmd.getToday,
@@ -72,7 +73,7 @@ router.get('/get/today', (req, res, next) => {
 });
 
 //----------------------------------------------------------------------
-router.get('/get/yesterday', (req, res, next) => {
+router.get('/gw/get/yesterday', (req, res, next) => {
   let cmd =
   {
     cmdtype: webCmd.getYesterday,
@@ -86,7 +87,7 @@ router.get('/get/yesterday', (req, res, next) => {
 });
 
 //----------------------------------------------------------------------
-router.get('/get/date', (req, res, next) => {
+router.get('/gw/get/date', (req, res, next) => {
   let year = req.query.year;
   let month = req.query.month;
   let date = req.query.date;
@@ -114,8 +115,47 @@ router.get('/get/date', (req, res, next) => {
   }
 });
 
+//----------------------------------------------------------------------
+router.get('/driver/get/latest', (req, res, next) => {
+  console.log('get it')
+  let driverId = req.query.driverId;
+  if (Boolean(driverId)) {
+    let cmd =
+    {
+      cmdtype: webCmd.getDriver,
+      cmdData: { driverId: driverId }
+    }
+    
+
+    socketClient.sendMessage(JSON.stringify(cmd))
+      .then((data) => {
+        console.log('Received:' + data);
+        res.send(data);
+      })
+  } else {
+    let cmd =
+    {
+      cmdtype: webCmd.msgError,
+      cmdData: { msg: "parameter error" }
+    }
+    res.send(JSON.stringify(cmd));
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+//POST
 //------------------------------------------------------------------------
-router.post('/post/reset', (req, res, next) => {
+router.post('/gw/post/reset', (req, res, next) => {
   let cmd =
   {
     cmdtype: webCmd.postReset,
@@ -128,7 +168,7 @@ router.post('/post/reset', (req, res, next) => {
     })
 })
 //------------------------------------------------------------------------
-router.post('/post/dimming/brightness/', (req, res, next) => {
+router.post('/gw/post/dimming/brightness/', (req, res, next) => {
   let brightness = req.body.brightness;
   let driverId = req.body.driverId;
   if (Boolean(brightness) && Boolean(driverId)) {
@@ -149,7 +189,7 @@ router.post('/post/dimming/brightness/', (req, res, next) => {
 })
 
 //--------------------------------------------------------------------------
-router.post('/post/dimming/colorTemperature/', (req, res, next) => {
+router.post('/gw/post/dimming/colorTemperature/', (req, res, next) => {
   let brightness = req.body.brightness;
   let driverId = req.body.driverId;
   let colorTemperature = req.body.colorTemperature;
@@ -171,7 +211,7 @@ router.post('/post/dimming/colorTemperature/', (req, res, next) => {
 })
 
 //---------------------------------------------------------------------------
-router.post('/post/dimming/colorXY/', (req, res, next) => {
+router.post('/gw/post/dimming/colorXY/', (req, res, next) => {
   let brightness = req.body.brightness;
   let driverId = req.body.driverId;
   let colorX = req.body.colorX;
@@ -181,7 +221,7 @@ router.post('/post/dimming/colorXY/', (req, res, next) => {
     let cmd =
     {
       cmdtype: webCmd.postDimingXY,
-      cmdData: { brightness: brightness, driverId: driverId, colorX: colorX, colorY:colorY}
+      cmdData: { brightness: brightness, driverId: driverId, colorX: colorX, colorY: colorY }
     }
     socketClient.sendMessage(JSON.stringify(cmd))
       .then((data) => {
