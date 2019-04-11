@@ -13,6 +13,7 @@ var webCmd;
     webCmd[webCmd["postDimingBrightness"] = 8] = "postDimingBrightness";
     webCmd[webCmd["postDimingCT"] = 9] = "postDimingCT";
     webCmd[webCmd["postDimingXY"] = 10] = "postDimingXY";
+    webCmd[webCmd["postSwitchOnOff"] = 11] = "postSwitchOnOff";
     webCmd[webCmd["msgError"] = 404] = "msgError";
 })(webCmd || (webCmd = {}));
 //------------------------------------------------------------------
@@ -149,7 +150,7 @@ router.post('/gw/post/dimming/brightness/', (req, res, next) => {
         });
     }
     else {
-        res.send('error');
+        res.send('cmd error');
     }
 });
 //--------------------------------------------------------------------------
@@ -169,7 +170,7 @@ router.post('/gw/post/dimming/colorTemperature/', (req, res, next) => {
         });
     }
     else {
-        res.send('error');
+        res.send('cmd error');
     }
 });
 //---------------------------------------------------------------------------
@@ -190,7 +191,26 @@ router.post('/gw/post/dimming/colorXY/', (req, res, next) => {
         });
     }
     else {
-        res.send('error');
+        res.send('cmd error');
+    }
+});
+//--------------------------------------------------------------------------
+router.post('/driver/post/OnOff', (req, res, next) => {
+    let switchOnOff = req.body.switch;
+    let driverId = req.body.driverId;
+    if (Boolean(switchOnOff) && Boolean(driverId)) {
+        let cmd = {
+            cmdtype: webCmd.postSwitchOnOff,
+            cmdData: { switchOnOff: switchOnOff, driverId: driverId, }
+        };
+        socketClient.sendMessage(JSON.stringify(cmd))
+            .then((data) => {
+            //console.log('Received:' + data);
+            res.send(data);
+        });
+    }
+    else {
+        res.send('cmd error');
     }
 });
 module.exports = router;
