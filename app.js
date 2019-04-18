@@ -7,6 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var routerRestfulApi= require('./routes/restfulApi');
+var EventEmitter=require('events');
 var emitter = new EventEmitter();
 //emitter.setMaxListeners(100)
 // or 0 to turn off the limit
