@@ -10,7 +10,7 @@ var routerRestfulApi= require('./routes/restfulApi');
 var emitter = new EventEmitter();
 //emitter.setMaxListeners(100)
 // or 0 to turn off the limit
-emitter.setMaxListeners(0
+emitter.setMaxListeners(0);
 //let router=require('./routes/restfulApi');
 
 var app = express();
