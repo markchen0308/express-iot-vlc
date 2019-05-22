@@ -34,37 +34,37 @@ function runshell() {
     //shell.exec('curl -sL -X POST -d \"brightness=100&driverId=2\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/brightness/');
     //shell.exec('sleep 0.1');
     //console.log('');
-
-    shell.exec('curl -sL -X POST -d \"brightness=100&driverId=1&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.1');
+    var color=5000;
+    shell.exec('curl -sL -X POST -d \"brightness=100&driverId=255&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
+    shell.exec('sleep 0.3');
     console.log('');
-
+/*
     shell.exec('curl -sL -X POST -d \"brightness=100&driverId=2&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.1');
+    shell.exec('sleep 0.3');
     console.log('');
 
     shell.exec('curl -sL -X POST -d \"brightness=100&driverId=3&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.1');
+    shell.exec('sleep 0.3');
     console.log('');
 
     shell.exec('curl -sL -X POST -d \"brightness=100&driverId=4&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.1');
+    shell.exec('sleep 0.3');
     console.log('');
 
     shell.exec('curl -sL -X POST -d \"brightness=100&driverId=5&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.1');
+    shell.exec('sleep 0.3');
     console.log('');
 
     shell.exec('curl -sL -X POST -d \"brightness=100&driverId=6&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.1');
+    shell.exec('sleep 0.3');
     console.log('');
 
     shell.exec('curl -sL -X POST -d \"brightness=100&driverId=7&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.1');
+    shell.exec('sleep 1');
     console.log('');
 
     shell.exec('curl -sL -X POST -d \"brightness=100&driverId=8&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.1');
+    shell.exec('sleep 1');
     console.log('');
 
     shell.exec('curl -sL -X POST -d \"brightness=100&driverId=9&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
@@ -74,6 +74,6 @@ function runshell() {
     //shell.exec('curl -sL -X POST -d \"brightness=100&driverId=2&colorX=0.33&colorY=0.33\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorXY/');
     //shell.exec('sleep 0.1');
     //console.log('');
-    
+    */
 }
 runshell();
