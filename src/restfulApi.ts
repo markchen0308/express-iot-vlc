@@ -11,6 +11,7 @@ enum webCmd {
   getYesterday,
   getDate,
   getDriver,
+  setClientServer,
   postReset,
   postDimingBrightness,
   postDimingCT,
@@ -118,7 +119,6 @@ router.get('/gw/get/date', (req, res, next) => {
 
 //----------------------------------------------------------------------
 router.get('/driver/get/latest', (req, res, next) => {
-  console.log('get it')
   let driverId = req.query.driverId;
   if (Boolean(driverId)) {
     let cmd =
@@ -126,7 +126,7 @@ router.get('/driver/get/latest', (req, res, next) => {
       cmdtype: webCmd.getDriver,
       cmdData: { driverId: driverId }
     }
-    
+
 
     socketClient.sendMessage(JSON.stringify(cmd))
       .then((data) => {
@@ -236,14 +236,14 @@ router.post('/gw/post/dimming/colorXY/', (req, res, next) => {
 })
 //--------------------------------------------------------------------------
 router.post('/driver/post/OnOff', (req, res, next) => {
-  let switchOnOff= req.body.switch;
+  let switchOnOff = req.body.switch;
   let driverId = req.body.driverId;
- 
-  if (Boolean(switchOnOff) && Boolean(driverId) ) {
+
+  if (Boolean(switchOnOff) && Boolean(driverId)) {
     let cmd =
     {
       cmdtype: webCmd.postSwitchOnOff,
-      cmdData: { switchOnOff: switchOnOff, driverId: driverId,  }
+      cmdData: { switchOnOff: switchOnOff, driverId: driverId, }
     }
     socketClient.sendMessage(JSON.stringify(cmd))
       .then((data) => {
@@ -255,5 +255,32 @@ router.post('/driver/post/OnOff', (req, res, next) => {
     res.send('cmd error');
   }
 })
+//---------------------------------------------------------------------------
+//curl -X POST -d "socketRemoteServerIP=192.168.0.106&socketRemoteServerPort=6996"  http://192.168.0.107/vlc/gw/post/remoteServer/
+router.post('/gw/post/remoteServer', (req, res, next) => {
+  let socketRemoteServerIP = req.body.socketRemoteServerIP;
+  let socketRemoteServerPort = req.body.socketRemoteServerPort;
+  if (Boolean(socketRemoteServerIP) && Boolean(socketRemoteServerPort)) {
+    console.log('get ip :'+socketRemoteServerIP + ' port:'+socketRemoteServerPort +' from server')
+    let cmd =
+    {
+      cmdtype: webCmd.setClientServer,
+      cmdData: { serverIP: socketRemoteServerIP, serverPort: socketRemoteServerPort }
+    }
+    socketClient.sendMessage(JSON.stringify(cmd))
+      .then((data) => {
+        res.send(data);
+      })
+  } else {
+    let cmd =
+    {
+      cmdtype: webCmd.msgError,
+      cmdData: { msg: "parameter error" }
+    }
+    res.send(JSON.stringify(cmd));
+  }
+});
+
+
 
 module.exports = router;

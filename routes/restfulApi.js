@@ -9,11 +9,12 @@ var webCmd;
     webCmd[webCmd["getYesterday"] = 4] = "getYesterday";
     webCmd[webCmd["getDate"] = 5] = "getDate";
     webCmd[webCmd["getDriver"] = 6] = "getDriver";
-    webCmd[webCmd["postReset"] = 7] = "postReset";
-    webCmd[webCmd["postDimingBrightness"] = 8] = "postDimingBrightness";
-    webCmd[webCmd["postDimingCT"] = 9] = "postDimingCT";
-    webCmd[webCmd["postDimingXY"] = 10] = "postDimingXY";
-    webCmd[webCmd["postSwitchOnOff"] = 11] = "postSwitchOnOff";
+    webCmd[webCmd["setClientServer"] = 7] = "setClientServer";
+    webCmd[webCmd["postReset"] = 8] = "postReset";
+    webCmd[webCmd["postDimingBrightness"] = 9] = "postDimingBrightness";
+    webCmd[webCmd["postDimingCT"] = 10] = "postDimingCT";
+    webCmd[webCmd["postDimingXY"] = 11] = "postDimingXY";
+    webCmd[webCmd["postSwitchOnOff"] = 12] = "postSwitchOnOff";
     webCmd[webCmd["msgError"] = 404] = "msgError";
 })(webCmd || (webCmd = {}));
 //------------------------------------------------------------------
@@ -100,7 +101,6 @@ router.get('/gw/get/date', (req, res, next) => {
 });
 //----------------------------------------------------------------------
 router.get('/driver/get/latest', (req, res, next) => {
-    console.log('get it');
     let driverId = req.query.driverId;
     if (Boolean(driverId)) {
         let cmd = {
@@ -211,6 +211,30 @@ router.post('/driver/post/OnOff', (req, res, next) => {
     }
     else {
         res.send('cmd error');
+    }
+});
+//---------------------------------------------------------------------------
+//curl -X POST -d "socketRemoteServerIP=192.168.0.106&socketRemoteServerPort=6996"  http://192.168.0.107/vlc/gw/post/remoteServer/
+router.post('/gw/post/remoteServer', (req, res, next) => {
+    let socketRemoteServerIP = req.body.socketRemoteServerIP;
+    let socketRemoteServerPort = req.body.socketRemoteServerPort;
+    if (Boolean(socketRemoteServerIP) && Boolean(socketRemoteServerPort)) {
+        console.log('get ip :' + socketRemoteServerIP + ' port:' + socketRemoteServerPort + ' from server');
+        let cmd = {
+            cmdtype: webCmd.setClientServer,
+            cmdData: { serverIP: socketRemoteServerIP, serverPort: socketRemoteServerPort }
+        };
+        socketClient.sendMessage(JSON.stringify(cmd))
+            .then((data) => {
+            res.send(data);
+        });
+    }
+    else {
+        let cmd = {
+            cmdtype: webCmd.msgError,
+            cmdData: { msg: "parameter error" }
+        };
+        res.send(JSON.stringify(cmd));
     }
 });
 module.exports = router;
