@@ -88,10 +88,10 @@ function runCycleBrightAll() {
 //----------------------------test cmd-----------------------------------------
 
 //cycle color from min color to max color per 1 second
-//runCycleColorAll()
+runCycleColorAll()
 
 //cycle brightness from min brightness to max brightness per 1 second
 //runCycleBrightAll() 
 
 //tune color and brightness individually
-tuneBrightColor(5,maxBright,minColor+300)
+//tuneBrightColor(5,maxBright,minColor+300)
