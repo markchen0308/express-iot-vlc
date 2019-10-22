@@ -15,6 +15,7 @@ var webCmd;
     webCmd[webCmd["postDimingCT"] = 10] = "postDimingCT";
     webCmd[webCmd["postDimingXY"] = 11] = "postDimingXY";
     webCmd[webCmd["postSwitchOnOff"] = 12] = "postSwitchOnOff";
+    webCmd[webCmd["postCFMode"] = 13] = "postCFMode";
     webCmd[webCmd["msgError"] = 404] = "msgError";
 })(webCmd || (webCmd = {}));
 //------------------------------------------------------------------
@@ -201,7 +202,27 @@ router.post('/driver/post/OnOff', (req, res, next) => {
     if (Boolean(switchOnOff) && Boolean(driverId)) {
         let cmd = {
             cmdtype: webCmd.postSwitchOnOff,
-            cmdData: { switchOnOff: switchOnOff, driverId: driverId, }
+            cmdData: { switchOnOff: switchOnOff, driverId: driverId }
+        };
+        socketClient.sendMessage(JSON.stringify(cmd))
+            .then((data) => {
+            //console.log('Received:' + data);
+            res.send(data);
+        });
+    }
+    else {
+        res.send('cmd error');
+    }
+});
+//-------------------------------------------------------------------------
+router.post('/driver/post/dimCF', (req, res, next) => {
+    let cfMode = req.body.cfMode;
+    let driverId = req.body.driverId;
+    let brightness = req.body.brightness;
+    if (Boolean(cfMode) && Boolean(driverId) && Boolean(brightness)) {
+        let cmd = {
+            cmdtype: webCmd.postCFMode,
+            cmdData: { brightness: brightness, cfMode: cfMode, driverId: driverId }
         };
         socketClient.sendMessage(JSON.stringify(cmd))
             .then((data) => {
@@ -238,3 +259,4 @@ router.post('/gw/post/remoteServer', (req, res, next) => {
     }
 });
 module.exports = router;
+//curl -X POST -d "socketRemoteServerIP=127.0.0.1&socketRemoteServerPort=6996"  http://127.0.0.1/vlc/gw/post/remoteServer/

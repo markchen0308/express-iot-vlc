@@ -17,6 +17,7 @@ enum webCmd {
   postDimingCT,
   postDimingXY,
   postSwitchOnOff,
+  postCFMode,
   msgError = 404
 }
 
@@ -243,7 +244,29 @@ router.post('/driver/post/OnOff', (req, res, next) => {
     let cmd =
     {
       cmdtype: webCmd.postSwitchOnOff,
-      cmdData: { switchOnOff: switchOnOff, driverId: driverId, }
+      cmdData: { switchOnOff: switchOnOff, driverId: driverId}
+    }
+    socketClient.sendMessage(JSON.stringify(cmd))
+      .then((data) => {
+        //console.log('Received:' + data);
+        res.send(data);
+      })
+  }
+  else {
+    res.send('cmd error');
+  }
+})
+//-------------------------------------------------------------------------
+router.post('/driver/post/dimCF', (req, res, next) => {
+  let cfMode = req.body.cfMode;
+  let driverId = req.body.driverId;
+  let brightness = req.body.brightness;
+
+  if (Boolean(cfMode)&& Boolean(driverId)&& Boolean(brightness)) {
+    let cmd =
+    {
+      cmdtype: webCmd.postCFMode,
+      cmdData: { brightness: brightness, cfMode: cfMode, driverId: driverId}
     }
     socketClient.sendMessage(JSON.stringify(cmd))
       .then((data) => {
@@ -261,7 +284,7 @@ router.post('/gw/post/remoteServer', (req, res, next) => {
   let socketRemoteServerIP = req.body.socketRemoteServerIP;
   let socketRemoteServerPort = req.body.socketRemoteServerPort;
   if (Boolean(socketRemoteServerIP) && Boolean(socketRemoteServerPort)) {
-    console.log('get ip :'+socketRemoteServerIP + ' port:'+socketRemoteServerPort +' from server')
+    console.log('get ip :' + socketRemoteServerIP + ' port:' + socketRemoteServerPort + ' from server')
     let cmd =
     {
       cmdtype: webCmd.setClientServer,
@@ -284,3 +307,7 @@ router.post('/gw/post/remoteServer', (req, res, next) => {
 
 
 module.exports = router;
+
+
+
+//curl -X POST -d "socketRemoteServerIP=127.0.0.1&socketRemoteServerPort=6996"  http://127.0.0.1/vlc/gw/post/remoteServer/
