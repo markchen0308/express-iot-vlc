@@ -166,7 +166,7 @@ router.post('/gw/post/dimming/colorTemperature/', (req, res, next) => {
         };
         socketClient.sendMessage(JSON.stringify(cmd))
             .then((data) => {
-            //console.log('Received:' + data);
+            console.log('Received:' + data);
             res.send(data);
         });
     }

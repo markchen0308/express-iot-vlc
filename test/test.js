@@ -3,77 +3,95 @@ let infoServer = require('../config'); //include config setting
 let port = infoServer.webserverPort;
 let ip = infoServer.webserverIp;
 
-function runshell() {
-   // shell.exec('curl -sL -X GET http://' + ip.toString() + ':' + port + '/vlc/gw/get/today/latest');
-  //  shell.exec('sleep 0.1');
-   // console.log('');
+maxColor=5500;
+minColor=3000;
+minBright=10;
+maxBright=100;
 
-   // shell.exec('curl -sL -X GET http://' + ip.toString() + ':' + port + '/vlc/gw/get/today/after?seqid=5');
-   // shell.exec('sleep 0.1');
-  //  console.log('');
-    
-   // shell.exec('curl -sL -X GET http://' + ip.toString() + ':' + port + '/vlc/gw/get/today');
-  // shell.exec('sleep 0.1');
-  // console.log('');
-
-   //shell.exec('curl -sL -X GET http://' + ip.toString() + ':' + port + '/vlc/gw/get/yesterday');
-    //shell.exec('sleep 0.1');
-    //console.log('');
-
-    //let cmd='curl -sL -X GET \"http://'+ip.toString()+':'+port+'/vlc/gw/get/date?year=2019&month=03&date=17\"';
-     //console.log(cmd);
-   
-   // shell.exec('curl -sL -X GET \"http://' + ip.toString() + ':' + port + '/vlc/gw/get/date?year=2019&month=01&date=18\"');
-   // shell.exec('sleep 0.1');
-  //  console.log('');
-
-   // shell.exec('curl -sL -X POST http://' + ip.toString() + ':' + port + '/vlc/gw/post/reset/');
-   // shell.exec('sleep 0.1');
-   // console.log('');
-
-    //shell.exec('curl -sL -X POST -d \"brightness=100&driverId=2\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/brightness/');
-    //shell.exec('sleep 0.1');
-    //console.log('');
-    var color=5000;
-    shell.exec('curl -sL -X POST -d \"brightness=100&driverId=255&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.3');
-    console.log('');
-/*
-    shell.exec('curl -sL -X POST -d \"brightness=100&driverId=2&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.3');
-    console.log('');
-
-    shell.exec('curl -sL -X POST -d \"brightness=100&driverId=3&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.3');
-    console.log('');
-
-    shell.exec('curl -sL -X POST -d \"brightness=100&driverId=4&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.3');
-    console.log('');
-
-    shell.exec('curl -sL -X POST -d \"brightness=100&driverId=5&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.3');
-    console.log('');
-
-    shell.exec('curl -sL -X POST -d \"brightness=100&driverId=6&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.3');
-    console.log('');
-
-    shell.exec('curl -sL -X POST -d \"brightness=100&driverId=7&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 1');
-    console.log('');
-
-    shell.exec('curl -sL -X POST -d \"brightness=100&driverId=8&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 1');
-    console.log('');
-
-    shell.exec('curl -sL -X POST -d \"brightness=100&driverId=9&colorTemperature=3000\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
-    shell.exec('sleep 0.1');
-    console.log('');
-    
-    //shell.exec('curl -sL -X POST -d \"brightness=100&driverId=2&colorX=0.33&colorY=0.33\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorXY/');
-    //shell.exec('sleep 0.1');
-    //console.log('');
-    */
+function tuneBrightColor(id,brightness,color)
+{
+    shell.exec('curl -sL -X POST -d \"brightness='+brightness+'&driverId='+id+'&colorTemperature='+color+'\" http://' + ip.toString() + ':' + port + '/vlc/gw/post/dimming/colorTemperature/');
 }
-runshell();
+//--------------------------- cycle color from min color to max color per 1 second----------------------------------------------//
+function runCycleColorAll() {
+    timeCycle=1000;//1s
+    id=255;//for all
+    brightness=maxBright;//10~100%
+    color=minColor;
+    colorStep=500;
+    direction=0;
+    setInterval(()=>{
+        tuneBrightColor(id,brightness,color);
+        if(direction==0)
+        {
+            if((color<maxColor))
+            {
+                color+=colorStep
+            }
+            else
+            {
+                direction=1;
+                color-=colorStep;
+            }
+        }
+        else
+        {
+            if((color>minColor))
+            {
+                color-=colorStep
+            }
+            else
+            {
+                direction=0;
+                color+=colorStep;
+            }
+        }
+    },timeCycle)
+}
+//--------------------------- cycle brightness from min brightness to max brightness per 1 second----------------------------------------------//
+function runCycleBrightAll() {
+    timeCycle=1000;//1s
+    id=255;//for all
+    brightness=minBright;//10~100%
+    brightStep=5;
+    color=maxColor;
+    
+    direction=0;
+    setInterval(()=>{
+        tuneBrightColor(id,brightness,color);
+        if(direction==0)
+        {
+            if((brightness<maxBright))
+            {
+                brightness+=brightStep
+            }
+            else
+            {
+                direction=1;
+                brightness-=brightStep;
+            }
+        }
+        else
+        {
+            if((brightness>minBright))
+            {
+                brightness-=brightStep
+            }
+            else
+            {
+                direction=0;
+                brightness+=brightStep;
+            }
+        }
+    },timeCycle)
+}
+//----------------------------test cmd-----------------------------------------
+
+//cycle color from min color to max color per 1 second
+runCycleColorAll()
+
+//cycle brightness from min brightness to max brightness per 1 second
+//runCycleBrightAll() 
+
+//tune color and brightness individually
+//tuneBrightColor(5,maxBright,minColor+300)
